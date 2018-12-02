@@ -1,0 +1,46 @@
+<script src="color.js"></script>
+
+<script>
+var colorsTest = [
+	{ name:'Black', 	hex:'#000000', rgb:'rgb(0,0,0)', 		hsl:'hsl(0,0%,0%)'		},
+  	{ name:'White', 	hex:'#FFFFFF', rgb:'rgb(255,255,255)', 	hsl:'hsl(0,0%,100%)'	},
+  	{ name:'Red', 		hex:'#FF0000', rgb:'rgb(255,0,0)', 		hsl:'hsl(0,100%,50%)'	},
+  	{ name:'Lime', 		hex:'#00FF00', rgb:'rgb(0,255,0)', 		hsl:'hsl(120,100%,50%)'	},
+  	{ name:'Blue', 		hex:'#0000FF', rgb:'rgb(0,0,255)', 		hsl:'hsl(240,100%,50%)'	},
+  	{ name:'Yellow', 	hex:'#FFFF00', rgb:'rgb(255,255,0)', 	hsl:'hsl(60,100%,50%)'	},
+  	{ name:'Cyan', 		hex:'#00FFFF', rgb:'rgb(0,255,255)', 	hsl:'hsl(180,100%,50%)'	},
+  	{ name:'Magenta', 	hex:'#FF00FF', rgb:'rgb(255,0,255)', 	hsl:'hsl(300,100%,50%)'	},
+  	{ name:'Silver', 	hex:'#C0C0C0', rgb:'rgb(192,192,192)', 	hsl:'hsl(0,0%,75%)'		},
+  	{ name:'Gray', 		hex:'#808080', rgb:'rgb(128,128,128)', 	hsl:'hsl(0,0%,50%)'		},
+  	{ name:'Maroon', 	hex:'#800000', rgb:'rgb(128,0,0)', 		hsl:'hsl(0,100%,25%)'	},
+  	{ name:'Olive', 	hex:'#808000', rgb:'rgb(128,128,0)', 	hsl:'hsl(60,100%,25%)'	},
+  	{ name:'Green', 	hex:'#008000', rgb:'rgb(0,128,0)', 		hsl:'hsl(120,100%,25%)'	},
+  	{ name:'Purple', 	hex:'#800080', rgb:'rgb(128,0,128)', 	hsl:'hsl(300,100%,25%)'	},
+  	{ name:'Teal', 		hex:'#008080', rgb:'rgb(0,128,128)', 	hsl:'hsl(180,100%,25%)'	},
+  	{ name:'Navy', 		hex:'#000080', rgb:'rgb(0,0,128)', 		hsl:'hsl(240,100%,25%)'	}
+];
+
+
+
+colorsTest.forEach(function(color){
+	var rgb = Color.parseRGB(color.rgb);
+	var hsl = Color.parseHSL(color.hsl);
+	
+	var hsl2 = Color.rgb2hsl(rgb.r, rgb.g, rgb.b);
+	var rgb2 = Color.hsl2rgb(hsl.h, hsl.s, hsl.l);
+	
+	if(rgb.r == rgb2.r && rgb.g == rgb2.g && rgb.b == rgb2.b){
+		console.log(color.name + " hsl2rgb OK");
+	}else{
+		console.log(color.name + " hsl2rgb KO", rgb, rgb2);
+	}
+	
+	if(hsl.h == hsl2.h && hsl.s == hsl2.s && hsl.l == hsl2.l){
+		console.log(color.name + " rgb2hsl OK");
+	}else{
+		console.log(color.name + " rgb2hsl KO", hsl, hsl2);
+	}
+	console.log("----------");
+})
+
+</script>
