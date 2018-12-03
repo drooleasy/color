@@ -237,6 +237,18 @@ function Color(v){
 	}
 }
 
+Color.prototype.pojo = function(){
+	return {
+		r: this.r,
+		g: this.g,
+		b: this.b,
+		h: this.h,
+		s: this.s,
+		l: this.l,
+		a: this.a
+	};
+}
+
 Color.prototype.equals = function color_equals (other){
 	return this.r == other.r && this.g == other.g && this.b == other.b && this.a == other.a
 };
