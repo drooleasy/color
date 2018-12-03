@@ -14,20 +14,20 @@ function Color(v){
 		if(!_rgb){
 			_rgb = Color.hsl2rgb(self.h, self.s, self.l);
 			delete _rgb.a;
-		}	
+		}
 	}
 	function _checkHSL(){
 		if(!_hsl){
 			_hsl = Color.rgb2hsl(self.r, self.g, self.b);
 			delete _hsl.a;
-		}		
+		}
 	}
 
-	
+
 	Object.defineProperties(this, {
 		"h" : {
 			"get": function(){
-				_checkHSL(); 
+				_checkHSL();
 				return _hsl.h;
 			},
 			"set": function(v){
@@ -41,7 +41,7 @@ function Color(v){
 		},
 		"s" : {
 			"get": function(){
-				_checkHSL(); 
+				_checkHSL();
 				return _hsl.s;
 			},
 			"set": function(v){
@@ -54,7 +54,7 @@ function Color(v){
 		},
 		"l" : {
 			"get": function(){
-				_checkHSL();  
+				_checkHSL();
 				return _hsl.l;
 			},
 			"set": function(v){
@@ -66,26 +66,26 @@ function Color(v){
 			}
 		},
 		"r" : {
-			"get": function(){ 
-				_checkRGB(); 
+			"get": function(){
+				_checkRGB();
 				return _rgb.r;
 			},
 			"set": function(v){
 				if(typeof v !== 'number') throw new TypeError("Not a numeric");
 				_checkRGB();
-				_hsl = false; 
+				_hsl = false;
 				v = Math.max(0, Math.min(v, 255));
 				_rgb.r = Math.round(v);
 			}
 		},
 		"g" : {
 			"get": function(){
-				_checkRGB(); 
+				_checkRGB();
 				return _rgb.g;
 			},
 			"set": function(v){
 				if(typeof v !== 'number') throw new TypeError("Not a numeric");
-				_checkRGB(); 
+				_checkRGB();
 				_hsl = false;
 				v = Math.max(0, Math.min(v, 255));
 				_rgb.g = Math.round(v);
@@ -93,19 +93,19 @@ function Color(v){
 		},
 		"b" : {
 			"get": function(){
-				_checkRGB(); 
+				_checkRGB();
 				return _rgb.b;
 			},
 			"set": function(v){
 				if(typeof v !== 'number') throw new TypeError("Not a numeric");
 				_checkRGB();
-				_hsl = false; 
+				_hsl = false;
 				v = Math.max(0, Math.min(v, 255));
 				_rgb.b = Math.round(v);
 			}
 		},
 		"a" : {
-			"get": function(){ 
+			"get": function(){
 				return _a;
 			},
 			"set": function(v){
@@ -171,45 +171,44 @@ function Color(v){
 			}
 		}
 	});
-	
-	
-	
-	
+
+
+
+
 	if(v){
 		if(typeof v == 'string'){
 			if(v.length > 0 && v[0] == "#"){
-				_rgb = Color.parseHEX(v);
+				_rgb = Color.parse.hex(v);
 				_a = _rgb.a;
 				delete _rgb.a;
 			}else if(v.length > 4 && v.substring(0, 5) == "hsla"){
-				_hsl = Color.parseHSLA(v);
+				_hsl = Color.parse.hsla(v);
 				_a = hsl.a;
-				delete _hsl.a;	
+				delete _hsl.a;
 			}else if(v.length > 4 && v.substring(0, 5) == "rgba"){
-				_rgb = Color.parseRGBA(v);
+				_rgb = Color.parse.rgba(v);
 				_a = _rgb.a;
 				delete _rgb.a;
 			}else if(v.length > 3 && v.substring(0, 4) == "hsl"){
-				_hsl = Color.parseHSL(v);
+				_hsl = Color.parse.hsl(v);
 				_a = hsl.a;
-				delete _hsl.a;	
+				delete _hsl.a;
 			}else if(v.length > 4 && v.substring(0, 4) == "rgb"){
-				_rgb = Color.parseRGB(v);
+				_rgb = Color.parse.rgb(v);
 				_a = _rgb.a;
 				delete _rgb.a;
 			}else if(Color.byName(v, true)){
-				_rgb = Color.parseHEX(Color.byName(v, true));
+				_rgb = Color.parse.hex(Color.byName(v, true));
 				_a = _rgb.a;
 				delete _rgb.a;
 			}
 		}else{
 			if(typeof v.r == 'number' && typeof v.g == 'number' && typeof v.b == 'number'){
-				console.log("fumanchu")
 				_rgb = {
 					r: v.r,
 					g: v.g,
 					b: v.b,
-					a: v.a	
+					a: v.a
 				};
 				if(typeof v.a == 'number'){
 					_a = Math.max(0, Math.min(1, v.a));
@@ -224,19 +223,19 @@ function Color(v){
 					s: Math.max(0, Math.min(100, v.s)),
 					l: Math.max(0, Math.min(100, v.l))
 				}
-				
+
 				if(typeof v.a == 'number'){
 					_a = Math.max(0, Math.min(1, v.a));
 				}else{
 					_a = 1;
 				}
-			}		
+			}
 		}
 		if(!_hsl && !_rgb){
 			_rgb = {r:0, g: 0, b:0};
-		}		
-	}	
-	
+		}
+	}
+
 }
 
 Color.prototype.equals = function color_equals (other){
@@ -247,24 +246,18 @@ Color.prototype.clone = function(){
 	return new Color(this);
 };
 
-Color.prototype.hslString = function color_hslString(){
-	if(this.a == 1){
-		return "hsl(" + this.h + ", " + this.s + "%, " + this.l + "%)";
-	}
-	return "hsla(" + this.h + ", " + this.s + "%, " + this.l + "%, " + this.a + ")";
+Color.prototype.hslString = function(){
+	return Color.string.hsl(this.h, this.s, this.l, this.a);
 };
 
 
-Color.prototype.rgbString = function color_rgbString(){
-	if(this.a == 1){
-		return "rgb(" + this.r + ", " + this.g + ", " + this.b + ")";
-	}
-	return "rgba(" + this.r + ", " + this.g + ", " + this.b + ", " + this.a + ")";
+Color.prototype.rgbString = function(){
+	return Color.string.rgb(this.r, this.g, this.b, this.a);
 };
 
 
-Color.prototype.hexString = function color_hexString(){
-	return "#" + (this.r < 16 ? "0": "") + this.r.toString(16) + (this.g < 16 ? "0": "") + this.g.toString(16) + (this.b < 16 ? "0": "") + this.b.toString(16);
+Color.prototype.hexString = function(includeAlpha){
+	return Color.string.hex(this.r, this.g, this.b, this.a, includeAlpha);
 };
 
 Color.prototype.toString = Color.prototype.rgbString;
@@ -279,7 +272,7 @@ Color.byName = function(name, dontInstanciate){
 };
 
 
-	
+
 Color.rgb2hsl = function rgb2hsl(r, g, b, a){
 	// https://www.rapidtables.com/convert/color/rgb-to-hsl.html
 	var r2 = r/255,
@@ -294,11 +287,11 @@ Color.rgb2hsl = function rgb2hsl(r, g, b, a){
 	else if(cmax == r2) h = 60 * (((g2 - b2) / delta) % 6);
 	else if(cmax == g2) h = 60 * ((b2 - r2) / delta + 2);
 	else if(cmax == b2) h = 60 * ((r2 - g2) / delta + 4);
-	
+
 	l = (cmax + cmin) / 2;
-	
+
 	s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-	
+
 	return {
 		h: h < 0 ? h + 360 : h,
 		s: 100*s,
@@ -306,7 +299,7 @@ Color.rgb2hsl = function rgb2hsl(r, g, b, a){
 		a: a
 	};
 };
-	
+
 
 Color.hsl2rgb = function hsl2rgb(h, s, l, a){
 	// https://www.rapidtables.com/convert/color/hsl-to-rgb.html
@@ -323,7 +316,7 @@ Color.hsl2rgb = function hsl2rgb(h, s, l, a){
 	else if(h < 240) 	_rgb = {r:0, g:x, b:c};
 	else if(h < 300) 	_rgb = {r:x, g:0, b:c};
 	else 				_rgb = {r:c, g:0, b:x};
-	
+
 	return {
 		r: Math.ceil((_rgb.r + m) * 255),
 		g: Math.ceil((_rgb.g + m) * 255),
@@ -333,7 +326,35 @@ Color.hsl2rgb = function hsl2rgb(h, s, l, a){
 };
 
 
-Color.parseHEX = function parseHEX(str){
+Color.parse = function parseColor(str){
+	str = str.trim();
+	var hsla, color = false;
+	if(str.length > 0 && str[0] == "#"){
+		color = Color.parse.hex(str);
+	}else if(str.length > 4 && str.substring(0, 5) == "hsla"){
+		hsla = Color.parse.hsla(str);
+		color = hsl2rgb(hsla.h, hsla.s, hsla.l, hsla.a);
+	}else if(str.length > 4 && str.substring(0, 5) == "rgba"){
+		color = Color.parse.rgba(str);
+	}else if(str.length > 3 && str.substring(0, 4) == "hsl"){
+		hsla = Color.parse.hsl(str);
+		color = hsl2rgb(hsla.h, hsla.s, hsla.l, hsla.a);;
+	}else if(str.length > 4 && str.substring(0, 4) == "rgb"){
+		color = Color.parse.rgb(str);
+	}else if(str == "transparent"){
+		color = {r:0, g:0, b:0, a:0};
+	}else if(Color.byName(str)){
+		color = Color.parse.hex(color.byName(str));
+	}
+	// TODO:
+	// currentColor  --> la valeur calculée de la propriété color pour l'élément. Si currentColor est utilisée comme valeur pour la propriété color, sa valeur est déterminée à partir de la valeur héritée pour la propriété color.
+	// inherit
+
+	return color;
+};
+
+
+Color.parse.hex = function parseHEX(str){
 	str = str.trim();
 	if(str[0] != "#") return false;
 	if(str.length == 4){
@@ -350,7 +371,7 @@ Color.parseHEX = function parseHEX(str){
 			b: parseInt(str.substring(5),   16),
 			a: 1
 		}
-	}/*else if(str.length == 5){
+	}else if(str.length == 5){
 		return {
 			r: parseInt(str.substring(1,2) + str.substring(1,2), 16),
 			g: parseInt(str.substring(2,3) + str.substring(2,3), 16),
@@ -364,13 +385,13 @@ Color.parseHEX = function parseHEX(str){
 			b: parseInt(str.substring(5,7), 16),
 			a: parseInt(str.substring(7),   16)
 		}
-	}*/
-	
+	}
+
 	return false;
 };
 
 
-Color.parseRGB = function parseRGB(str){
+Color.parse.rgb = function parseRGB(str){
 	var re = /^\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/;
 	var match = str.match(re);
 	if(!match) return false;
@@ -382,7 +403,7 @@ Color.parseRGB = function parseRGB(str){
 	};
 };
 
-Color.parseRGBA = function parseRGBA(str){
+Color.parse.rgba = function parseRGBA(str){
 	var re = /^\s*rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d+)\s*\)\s*$/;
 	var match = str.match(re);
 	if(!match) return false;
@@ -396,7 +417,7 @@ Color.parseRGBA = function parseRGBA(str){
 
 
 
-Color.parseHSL = function parseHSL(str){
+Color.parse.hsl = function parseHSL(str){
 	var re = /^\s*hsl\s*\(\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)\s*%\s*,\s*(\d*\.?\d+)\s*%\s*\)\s*$/;
 	var match = str.match(re);
 	if(!match) return false;
@@ -411,7 +432,7 @@ Color.parseHSL = function parseHSL(str){
 };
 
 
-Color.parseHSLA = function parseHSLA(str){
+Color.parse.hsla = function parseHSLA(str){
 	var re = /^\s*hsl\s*\(\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)\s*%\s*,\s*(\d*\.?\d+)\s*%\s*,\s*(\d?\.?\d+)\s*\)\s*$/;
 	var match = str.match(re);
 	if(!match) return false;
@@ -422,32 +443,31 @@ Color.parseHSLA = function parseHSLA(str){
 		s: Math.max(0, Math.min(100, parseFloat(match[2]))),
 		l: Math.max(0, Math.min(100, parseFloat(match[3]))),
 		a: Math.max(0, Math.min(1,   parseFloat(match[4])))
-	};
+	}
 };
 
-Color.parseColor = function parseColor(str){
-	str = str.trim();
-	var hsla, color = false;
-	if(str.length > 0 && str[0] == "#"){
-		color = parseHEX(str);
-	}else if(str.length > 4 && str.substring(0, 5) == "hsla"){
-		hsla = parseHSLA(str);
-		color = hsl2rgb(hsla.h, hsla.s, hsla.l, hsla.a);	
-	}else if(str.length > 4 && str.substring(0, 5) == "rgba"){
-		color = parseRGBA(str);
-	}else if(str.length > 3 && str.substring(0, 4) == "hsl"){
-		hsla = parseHSL(str);
-		color = hsl2rgb(hsla.h, hsla.s, hsla.l, hsla.a);;	
-	}else if(str.length > 4 && str.substring(0, 4) == "rgb"){
-		color = parseRGB(str);
-	}else if(str == "transparent"){
-		color = {r:0, g:0, b:0, a:0};
-	}else if(colorNameIndex[str]){
-		color = parseHEX(colorNameIndex[str]);
+
+Color.prototype.string = {};
+
+Color.prototype.string.hsl = function color_hslString(h, s, l, a){
+	if(a === undefined || a == 1){
+		return "hsl(" + h + ", " + s + "%, " + l + "%)";
 	}
-	// TODO:
-	// currentColor  --> la valeur calculée de la propriété color pour l'élément. Si currentColor est utilisée comme valeur pour la propriété color, sa valeur est déterminée à partir de la valeur héritée pour la propriété color.
-	// inherit
-	
-	return color;
+	return "hsla(" + h + ", " + s + "%, " + l + "%, " + a + ")";
+};
+
+
+Color.prototype.string.rgb = function color_rgbString(r, g, b, a){
+	if(a === undefined || this.a == 1){
+		return "rgb(" + r + ", " + g + ", " + b + ")";
+	}
+	return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+};
+
+
+Color.prototype.string.hex = function color_hexString(r, g, b, a, includeAlpha){
+	if(a !== undefined && includeAlpha && a < 1){ // warning: this is not supported by IE/Edge yet
+		return "#" + (r < 16 ? "0": "") + r.toString(16) + (g < 16 ? "0": "") + g.toString(16) + (b < 16 ? "0": "") + b.toString(16)  + (a < 16 ? "0": "") + a.toString(16);
+	}
+	return "#" + (r < 16 ? "0": "") + r.toString(16) + (g < 16 ? "0": "") + g.toString(16) + (b < 16 ? "0": "") + b.toString(16);
 };
