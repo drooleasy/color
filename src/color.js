@@ -8,7 +8,7 @@
 function Color(v){
 	var _rgb = false;
 	var _hsl = false;
-	this._a = 0;
+	var _a = 0;
 	var self = this;
 	function _checkRGB(){
 		if(!_rgb){
@@ -249,8 +249,10 @@ Color.prototype.pojo = function(){
 	};
 }
 
-Color.prototype.equals = function color_equals (other){
-	return this.r == other.r && this.g == other.g && this.b == other.b && this.a == other.a
+Color.prototype.equals = function color_equals (other, ignoreAlpha){
+	var res =  this.r == other.r && this.g == other.g && this.b == other.b;
+	if(!ignoreAlpha) res = res  && this.a == other.a;
+	return res;
 };
 
 Color.prototype.clone = function(){
@@ -498,4 +500,4 @@ Color.string.hex = function color_hexString(r, g, b, a, includeAlpha){
 
 
 
-module && (module.exports = Color);
+!!module && (module.exports = Color);
