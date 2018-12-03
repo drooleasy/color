@@ -52,6 +52,25 @@ c.s *= 0.5; // saturation channel
 console.log(c.l); // lightness channel
 ```
 
+There are also normalized version of each channel wich take and give values between 0 and 1, they use the same name as the orginal channel, with a \_1 suffix :
+
+```js
+var c = new Color("red");
+c.r_1; // 1
+c.g_1; // 0
+c.b_1; // 0
+c.h_1; // 0
+c.s_1; // 1
+c.l_1; // .5
+c.a_1; // 1
+
+c.r_1 -= .5;
+c.r; // 127
+c.g_1 = 1;
+c.g_1; // 1
+c.g; // 255
+```
+
 You can get a copy of a color with `clone()` or get a POJO of its channels (the key are r, g, b, h, s, l, a) with the `pojo()` method.
 
 ```js
