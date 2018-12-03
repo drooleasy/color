@@ -338,19 +338,18 @@ Color.hsl2rgb = function hsl2rgb(h, s, l, a){
 };
 
 
-Color.parse = function parseColor(str){
+// beware when returned as POJO, color can be either rgba OR hsla depending on input string
+Color.parse = function parseColor(str, asPOJO){
 	str = str.trim();
-	var hsla, color = false;
+	var color = false;
 	if(str.length > 0 && str[0] == "#"){
 		color = Color.parse.hex(str);
 	}else if(str.length > 4 && str.substring(0, 5) == "hsla"){
-		hsla = Color.parse.hsla(str);
-		color = hsl2rgb(hsla.h, hsla.s, hsla.l, hsla.a);
+		color = Color.parse.hsla(str);
 	}else if(str.length > 4 && str.substring(0, 5) == "rgba"){
 		color = Color.parse.rgba(str);
 	}else if(str.length > 3 && str.substring(0, 4) == "hsl"){
-		hsla = Color.parse.hsl(str);
-		color = hsl2rgb(hsla.h, hsla.s, hsla.l, hsla.a);;
+		color = Color.parse.hsl(str);
 	}else if(str.length > 4 && str.substring(0, 4) == "rgb"){
 		color = Color.parse.rgb(str);
 	}else if(str == "transparent"){
@@ -361,8 +360,10 @@ Color.parse = function parseColor(str){
 	// TODO:
 	// currentColor  --> la valeur calculée de la propriété color pour l'élément. Si currentColor est utilisée comme valeur pour la propriété color, sa valeur est déterminée à partir de la valeur héritée pour la propriété color.
 	// inherit
-
-	return color;
+	if(!color || asPojo){
+		return color;
+	}
+	return new Color(color);
 };
 
 
