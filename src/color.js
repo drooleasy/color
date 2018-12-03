@@ -181,19 +181,19 @@ function Color(v){
 				_rgb = Color.parse.hex(v, true);
 				_a = _rgb && _rgb.a || 0;
 				delete _rgb.a;
-			}else if(v.length > 4 && v.substring(0, 5) == "hsla"){
+			}else if(v.length > 4 && v.substring(0, 4) == "hsla"){
 				_hsl = Color.parse.hsla(v, true);
 				_a = _hsl && _hsl.a || 0;
 				delete _hsl.a;
-			}else if(v.length > 4 && v.substring(0, 5) == "rgba"){
+			}else if(v.length > 4 && v.substring(0, 4) == "rgba"){
 				_rgb = Color.parse.rgba(v, true);
 				_a = _rgb && _rgb.a || 0;
 				delete _rgb.a;
-			}else if(v.length > 3 && v.substring(0, 4) == "hsl"){
+			}else if(v.length > 3 && v.substring(0, 3) == "hsl"){
 				_hsl = Color.parse.hsl(v, true);
-				_a = _rgb && _rgb.a || 0;
+				_a = _hsl && _hsl.a || 0;
 				delete _hsl.a;
-			}else if(v.length > 4 && v.substring(0, 4) == "rgb"){
+			}else if(v.length > 4 && v.substring(0, 3) == "rgb"){
 				_rgb = Color.parse.rgb(v, true);
 				_a = _rgb && _rgb.a || 0;
 				delete _rgb.a;
@@ -231,9 +231,9 @@ function Color(v){
 				}
 			}
 		}
-		if(!_hsl && !_rgb){
-			_rgb = {r:0, g: 0, b:0};
-		}
+	}
+	if(!_hsl && !_rgb){
+		_rgb = {r:0, g: 0, b:0};
 	}
 }
 
