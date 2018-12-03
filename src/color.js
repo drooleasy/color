@@ -390,14 +390,14 @@ Color.parse.hex = function parseHEX(str, asPOJO){
 			r: parseInt(str.substring(1,2) + str.substring(1,2), 16),
 			g: parseInt(str.substring(2,3) + str.substring(2,3), 16),
 			b: parseInt(str.substring(3,4) + str.substring(3,4), 16),
-			a: parseInt(str.substring(4)   + str.substring(4)  , 16)
+			a: parseInt(str.substring(4)   + str.substring(4)  , 16) / 255
 		}
 	}else if(str.length == 9){
 		rgb = {
 			r: parseInt(str.substring(1,3), 16),
 			g: parseInt(str.substring(3,5), 16),
 			b: parseInt(str.substring(5,7), 16),
-			a: parseInt(str.substring(7),   16)
+			a: parseInt(str.substring(7),   16) / 255
 		}
 	}
 
@@ -471,9 +471,9 @@ Color.parse.hsla = function parseHSLA(str, asPOJO){
 };
 
 
-Color.prototype.string = {};
+Color.string = {};
 
-Color.prototype.string.hsl = function color_hslString(h, s, l, a){
+Color.string.hsl = function color_hslString(h, s, l, a){
 	if(a === undefined || a == 1){
 		return "hsl(" + h + ", " + s + "%, " + l + "%)";
 	}
@@ -481,7 +481,7 @@ Color.prototype.string.hsl = function color_hslString(h, s, l, a){
 };
 
 
-Color.prototype.string.rgb = function color_rgbString(r, g, b, a){
+Color.string.rgb = function color_rgbString(r, g, b, a){
 	if(a === undefined || this.a == 1){
 		return "rgb(" + r + ", " + g + ", " + b + ")";
 	}
@@ -489,9 +489,13 @@ Color.prototype.string.rgb = function color_rgbString(r, g, b, a){
 };
 
 
-Color.prototype.string.hex = function color_hexString(r, g, b, a, includeAlpha){
+Color.string.hex = function color_hexString(r, g, b, a, includeAlpha){
 	if(a !== undefined && includeAlpha && a < 1){ // warning: this is not supported by IE/Edge yet
-		return "#" + (r < 16 ? "0": "") + r.toString(16) + (g < 16 ? "0": "") + g.toString(16) + (b < 16 ? "0": "") + b.toString(16)  + (a < 16 ? "0": "") + a.toString(16);
+		return ("#" + (r < 16 ? "0": "") + r.toString(16) + (g < 16 ? "0": "") + g.toString(16) + (b < 16 ? "0": "") + b.toString(16)  + (a < 16 ? "0": "") + a.toString(16)).toUpperCase();
 	}
-	return "#" + (r < 16 ? "0": "") + r.toString(16) + (g < 16 ? "0": "") + g.toString(16) + (b < 16 ? "0": "") + b.toString(16);
+	return ("#" + (r < 16 ? "0": "") + r.toString(16) + (g < 16 ? "0": "") + g.toString(16) + (b < 16 ? "0": "") + b.toString(16)).toUpperCase();
 };
+
+
+
+module && (module.exports = Color);

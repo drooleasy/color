@@ -1,0 +1,27 @@
+{
+  "name": "color",
+  "version": "1.0.0",
+  "description": "A utility for parsing css color string and manupulating rbga/hsla channels",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drooleasy/color.git"
+  },
+  "keywords": [
+    "js",
+    "color",
+    "css"
+  ],
+  "author": "Julien Droulez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drooleasy/color/issues"
+  },
+  "homepage": "https://github.com/drooleasy/color#readme",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
+}
