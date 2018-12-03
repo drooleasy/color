@@ -500,4 +500,5 @@ Color.string.hex = function color_hexString(r, g, b, a, includeAlpha){
 
 
 
-!!module && (module.exports = Color);
+var module = module || {};
+module.exports = Color;
