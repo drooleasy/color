@@ -455,7 +455,7 @@ Color.parse.hsl = function parseHSL(str, asPOJO){
 
 
 Color.parse.hsla = function parseHSLA(str, asPOJO){
-	var re = /^\s*hsl\s*\(\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)\s*%\s*,\s*(\d*\.?\d+)\s*%\s*,\s*(\d?\.?\d+)\s*\)\s*$/;
+	var re = /^\s*hsla\s*\(\s*(\d*\.?\d+)\s*,\s*(\d*\.?\d+)\s*%\s*,\s*(\d*\.?\d+)\s*%\s*,\s*(\d?\.?\d+)\s*\)\s*$/;
 	var match = str.match(re);
 	if(!match) return false;
 	var h = parseFloat(match[1]) % 360;
@@ -482,7 +482,7 @@ Color.string.hsl = function color_hslString(h, s, l, a){
 
 
 Color.string.rgb = function color_rgbString(r, g, b, a){
-	if(a === undefined || this.a == 1){
+	if(a === undefined || a == 1){
 		return "rgb(" + r + ", " + g + ", " + b + ")";
 	}
 	return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
